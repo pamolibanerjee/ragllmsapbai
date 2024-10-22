@@ -30,7 +30,7 @@ module.exports = function () {
             */
 
             //set the modeName you want
-            const chatModelName = "gpt-35";
+            const chatModelName = "gpt-35-turbo";
             const embeddingModelName = "text-embedding-ada-002";
 
             console.log(`Leveraing the following LLMs \n Chat Model:  gpt-35 \n Embedding Model: text-embedding-ada-002\n`);
@@ -77,7 +77,7 @@ module.exports = function () {
             //Optional. parse other model outputs if you choose to use a different model.
             else
             {
-                throw new Error("The model supported in this application is 'gpt-4'. Please customize this application to use any model supported by CAP LLM Plugin. Please make the customization by referring to the comments.")
+                throw new Error("The model supported in this application is 'gpt-35'. Please customize this application to use any model supported by CAP LLM Plugin. Please make the customization by referring to the comments.")
             }
             //Optional. handle memory after the RAG LLM call
             const responseTimestamp = new Date().toISOString();

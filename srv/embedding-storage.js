@@ -62,7 +62,8 @@ module.exports = function () {
       }
 
       // Load pdf from HANA and create a temp pdf doc
-      const stream = await db.stream(SELECT('content').from(Files, uuid));
+     // const stream = await db.stream(SELECT('content').from(Files, uuid));
+     //   const stream = await (SELECT('content').from(Files, uuid));
       // const stream = await db.run(SELECT('content').from(Files).where({ ID: uuid }));
       // //const stream = await db.stream(SELECT('content').from(Files).where({ ID: uuid }));
       const fileName = await (SELECT('fileName').from(Files).where({ ID: uuid }));
@@ -75,16 +76,16 @@ module.exports = function () {
       const pdfBytes = [];
 
       // Read PDF content and store it in pdfBytes array
-      stream.on('data', (chunk) => {
-        pdfBytes.push(chunk);
-      });
+      //Pamoli// stream.on('data', (chunk) => {
+      //   pdfBytes.push(chunk);
+      // });
 
-      // Wait for the stream to finish
-      await new Promise((resolve, reject) => {
-        stream.on('end', () => {
-          resolve();
-        });
-      });
+      // // Wait for the stream to finish
+      // await new Promise((resolve, reject) => {
+      //   stream.on('end', () => {
+      //     resolve();
+      //   });
+      // });
 
       // Convert pdfBytes array to a single Buffer
       const pdfBuffer = Buffer.concat(pdfBytes);

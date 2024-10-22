@@ -40,7 +40,7 @@
     "mocha": "^10.3.0"
   },
   "scripts": {
-    "start": "cds-serve",
+    "start": "cds watch --profile hybrid 4506",
     "watch-hr-approval-ui": "cds watch --open hr-approval-ui/webapp/index.html?sap-ui-xx-viewCache=false",
     "undeploy": "cf undeploy rag-quick-start-app --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
