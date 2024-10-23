@@ -57,6 +57,13 @@
           "apiVersion": "0.0.1",
           "modelName": "gpt-35-turbo"
         },
+        "gpt-4o": {
+          "destinationName": "GenAIHubDestination",
+          "deploymentUrl": "/v2/inference/deployments/dc069048e9d4e038",
+          "resourceGroup": "default",
+          "apiVersion": "0.0.1",
+          "modelName": "gpt-4o"
+        },
         "text-embedding-ada-002": {
           "destinationName": "GenAIHubDestination",
           "deploymentUrl": "/v2/inference/deployments/d66704941fe95b46",
