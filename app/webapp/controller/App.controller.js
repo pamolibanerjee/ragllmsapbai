@@ -7,6 +7,7 @@ sap.ui.define(
   
       return BaseController.extend("hrapprovalui.controller.App", {
         onInit: function() {
+          sessionStorage.setItem("isDeployedVersion", "true");
         }
       });
     }

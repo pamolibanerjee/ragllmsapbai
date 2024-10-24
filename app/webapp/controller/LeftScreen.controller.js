@@ -156,16 +156,36 @@ sap.ui.define([
             oUploadSet.getBinding("items").refresh();
         },
 
-        createEntity: function (item) {
+        onConvertToBase : async function(oAttachment) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader(),
+                    oData = oAttachment instanceof File ? oAttachment : oAttachment.getFileObject();
+
+                reader.readAsDataURL(oData);
+                reader.onload = () => {
+                    resolve(reader.result);
+                };
+                reader.onerror = (error) => {
+                    reject(new Error(error.message));
+                };
+            });
+        },
+
+        createEntity: async function (item) {
             
             const data = {
                 ID: self.crypto.randomUUID(),
                 mediaType: item.getMediaType(),
                 fileName: item.getFileName(),
                 size: item.getFileObject().size.toString(),
+                content: await this.onConvertToBase(item),
             };
+
+            
+
             const settings = {
-                url: this.getBaseURL() + "/odata/v4/embedding-storage/Files",
+                url : sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + "/odata/v4/embedding-storage/Files":"/odata/v4/embedding-storage/Files",
+//                url: this.getBaseURL() + "/odata/v4/embedding-storage/Files",
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -185,8 +205,8 @@ sap.ui.define([
 
         uploadContent: function (item, id) {
             
-            var url = this.getBaseURL() + `/odata/v4/embedding-storage/Files(${id})/content`;
-			item.setUploadUrl(url);	
+            var url = sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + `/odata/v4/embedding-storage/Files(${id})/content`:`/odata/v4/embedding-storage/Files(${id})/content`;
+            item.setUploadUrl(url);	
 			var oUploadSet = this.byId("uploadSet");
 			oUploadSet.setHttpRequestMethod("PUT");
 			oUploadSet.uploadItem(item);
