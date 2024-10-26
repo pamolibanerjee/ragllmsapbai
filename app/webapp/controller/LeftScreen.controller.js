@@ -156,20 +156,20 @@ sap.ui.define([
             oUploadSet.getBinding("items").refresh();
         },
 
-        onConvertToBase : async function(oAttachment) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader(),
-                    oData = oAttachment instanceof File ? oAttachment : oAttachment.getFileObject();
+        // onConvertToBase : async function(oAttachment) {
+        //     return new Promise((resolve, reject) => {
+        //         const reader = new FileReader(),
+        //             oData = oAttachment instanceof File ? oAttachment : oAttachment.getFileObject();
 
-                reader.readAsDataURL(oData);
-                reader.onload = () => {
-                    resolve(reader.result);
-                };
-                reader.onerror = (error) => {
-                    reject(new Error(error.message));
-                };
-            });
-        },
+        //         reader.readAsDataURL(oData);
+        //         reader.onload = () => {
+        //             resolve(reader.result);
+        //         };
+        //         reader.onerror = (error) => {
+        //             reject(new Error(error.message));
+        //         };
+        //     });
+        // },
 
         createEntity: async function (item) {
             
@@ -178,10 +178,7 @@ sap.ui.define([
                 mediaType: item.getMediaType(),
                 fileName: item.getFileName(),
                 size: item.getFileObject().size.toString(),
-                content: await this.onConvertToBase(item),
             };
-
-            
 
             const settings = {
                 url : sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + "/odata/v4/embedding-storage/Files":"/odata/v4/embedding-storage/Files",
@@ -204,7 +201,6 @@ sap.ui.define([
         },
 
         uploadContent: function (item, id) {
-            
             var url = sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + `/odata/v4/embedding-storage/Files(${id})/content`:`/odata/v4/embedding-storage/Files(${id})/content`;
             item.setUploadUrl(url);	
 			var oUploadSet = this.byId("uploadSet");

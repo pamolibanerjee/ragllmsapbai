@@ -25,15 +25,15 @@ module.exports = function () {
             console.log(`Received the request for RAG retrieval for the user query : ${user_query}\n`);
             /*
             For this sample use case we show how you can leverage the gpt model. However, you can easily customize this code to use any models supported by CAP LLM Plugin.
-            Chat Model:  gpt-4o 
+            Chat Model:  gpt-4 
             Embedding Model: text-embedding-ada-002
             */
 
             //set the modeName you want
-            const chatModelName = "gpt-4o";
+            const chatModelName = "gpt-4";
             const embeddingModelName = "text-embedding-ada-002";
 
-            console.log(`Leveraing the following LLMs \n Chat Model:  gpt-4o \n Embedding Model: text-embedding-ada-002\n`);
+            console.log(`Leveraing the following LLMs \n Chat Model:  gpt-4 \n Embedding Model: text-embedding-ada-002\n`);
             //Optional. handle memory before the RAG LLM call
             const memoryContext = await storeRetrieveMessages(conversationId, messageId, message_time, user_id, user_query, Conversation, Message, chatModelName);
 
@@ -67,7 +67,7 @@ module.exports = function () {
 
             //parse the response object according to the respective model for your use case. For instance, lets consider the following three models.
             let chatCompletionResponse = null;
-            if (chatModelName === "gpt-4o"){
+            if (chatModelName === "gpt-4"){
                 chatCompletionResponse =
                 {
                     "role": chatRagResponse.completion.choices[0].message.role,
@@ -77,7 +77,7 @@ module.exports = function () {
             //Optional. parse other model outputs if you choose to use a different model.
             else
             {
-                throw new Error("The model supported in this application is 'gpt-4o'. Please customize this application to use any model supported by CAP LLM Plugin. Please make the customization by referring to the comments.")
+                throw new Error("The model supported in this application is 'gpt-4'. Please customize this application to use any model supported by CAP LLM Plugin. Please make the customization by referring to the comments.")
             }
             //Optional. handle memory after the RAG LLM call
             const responseTimestamp = new Date().toISOString();

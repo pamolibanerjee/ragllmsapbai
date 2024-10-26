@@ -6,6 +6,7 @@ const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
 const fs = require('fs');
 const { PDFDocument } = require('pdf-lib');
 const { PDFLoader } = require('langchain/document_loaders/fs/pdf');
+const { Readable, PassThrough } = require("stream");
 
 
 // Helper method to convert embeddings to buffer for insertion
@@ -64,7 +65,7 @@ module.exports = function () {
       // Load pdf from HANA and create a temp pdf doc
      // const stream = await db.stream(SELECT('content').from(Files, uuid));
      // const stream = await (SELECT('content').from(Files, uuid));
-        const stream = await db.run(SELECT('content').from(Files).where({ ID: uuid }));
+        const pdfContent = await db.run(SELECT('content').from(Files).where({ ID: uuid }));
     //  const stream = await db.stream(SELECT('content').from(Files).where({ ID: uuid }));
       const fileName = await (SELECT('fileName').from(Files).where({ ID: uuid }));
       const fileNameString = fileName[0].fileName;
@@ -75,11 +76,14 @@ module.exports = function () {
       const pdfDoc = await PDFDocument.create();
       const pdfBytes = [];
 
-      // Read PDF content and store it in pdfBytes array
-      stream.on('data', (chunk) => {
-        pdfBytes.push(chunk);
-      });
+      const stream = new PassThrough;
 
+      stream.on('data', chunk => {
+        pdfBytes.push(chunk)
+      })
+
+      pdfContent[0].content.pipe(stream);
+      
       // // Wait for the stream to finish
       await new Promise((resolve, reject) => {
         stream.on('end', () => {
@@ -87,11 +91,25 @@ module.exports = function () {
         });
       });
 
+
+      // Read PDF content and store it in pdfBytes array
+      // stream.on('data', (chunk) => {
+      //   pdfBytes.push(chunk);
+      // });
+
+      // // // Wait for the stream to finish
+      // await new Promise((resolve, reject) => {
+      //   stream.on('end', () => {
+      //     resolve();
+      //   });
+      // });
+
       // Convert pdfBytes array to a single Buffer
-      const pdfBuffer = Buffer.concat(pdfBytes);
+        const pdfBuffer = Buffer.concat(pdfBytes);
+    //  const pfdBuffer = Buffer.concat(readable);
 
       // Load PDF data into a document
-      const externalPdfDoc = await PDFDocument.load(pdfBuffer);
+      const externalPdfDoc = await PDFDocument.load(pdfBuffer,{ignoreEncryption : true});
 
       // Copy pages from external PDF document to the new document
       const pages = await pdfDoc.copyPages(externalPdfDoc, externalPdfDoc.getPageIndices());
