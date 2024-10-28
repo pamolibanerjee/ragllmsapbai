@@ -146,6 +146,7 @@ module.exports = function () {
       for (const chunk of textChunks) {
         const embeddingModelConfig = cds.env.requires["gen-ai-hub"][embeddingModelName];
         const embeddingResult = await capllmplugin.getEmbeddingWithConfig(embeddingModelConfig, chunk.pageContent);
+        
         let embedding = null;
         //using Azure OpenAI's text-embedding-ada-002 model.
         
@@ -162,6 +163,7 @@ module.exports = function () {
           "embedding": array2VectorBuffer(embedding)
         };
         textChunkEntries.push(entry);
+//        console.log('Pushed into embedding received from LLM into DB for chunk ',index);
       }
 
       console.log("Inserting text chunks with embeddings into SAP HANA Cloud's vector engine!\n");

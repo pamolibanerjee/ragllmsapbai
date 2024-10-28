@@ -1,5 +1,5 @@
 _schema-version: "3.1"
-ID: rag-quick-start-app
+ID: rag-cap-llm
 description: A simple CAP project.
 version: 1.0.0
 parameters:
@@ -14,14 +14,14 @@ build-parameters:
 
 modules:
   # --------------------- SERVER MODULE -------------------------
-  - name: rag-quick-start-app-srv
+  - name: rag-cap-llm-srv
     # -------------------------------------------------------------
     type: nodejs
     path: gen/srv
     requires:
-      - name: rag-quick-start-app-auth
-      - name: rag-quick-start-app-db
-      - name: rag-quick-start-app-destination-service
+      - name: rag-cap-llm-auth
+      - name: rag-cap-llm-db
+      - name: rag-cap-llm-destination-service
     provides:
       - name: srv-api
         properties:
@@ -39,12 +39,12 @@ modules:
         - default-env.json
 
   # -------------------- DB MODULE ------------------------------
-  - name: rag-quick-start-app-db-deployer
+  - name: rag-cap-llm-db-deployer
     # -------------------------------------------------------------
     type: hdb
     path: gen/db
     requires:
-      - name: rag-quick-start-app-db
+      - name: rag-cap-llm-db
     parameters:
       buildpack: nodejs_buildpack
     # build-parameters:
@@ -52,45 +52,45 @@ modules:
     #     - node_modules/
 
     # ------------------ DESTINATION CONTENT ----------------------
-  - name: rag-quick-start-app-destination-content
+  - name: rag-cap-llm-destination-content
     # ------------------------------------------------------------
     type: com.sap.application.content
     requires:
-      - name: rag-quick-start-app-destination-service
+      - name: rag-cap-llm-destination-service
         parameters:
           content-target: true
-      - name: rag-quick-start-app-repo-host
+      - name: rag-cap-llm-repo-host
         parameters:
           service-key:
-            name: rag-quick-start-app-repo-host-key
-      - name: rag-quick-start-app-auth
+            name: rag-cap-llm-repo-host-key
+      - name: rag-cap-llm-auth
         parameters:
           service-key:
-            name: uaa_rag-quick-start-app-key
+            name: uaa_rag-cap-llm-key
     parameters:
       content:
         instance:
           destinations:
             - Name: hr_app_hr_approval_rag_usecase_repo_host
-              ServiceInstanceName: rag-quick-start-app-html5-app-host-service
-              ServiceKeyName: rag-quick-start-app-repo-host-key
+              ServiceInstanceName: rag-cap-llm-html5-app-host-service
+              ServiceKeyName: rag-cap-llm-repo-host-key
               sap.cloud.service: ragquickstart.app
             - Authentication: OAuth2UserTokenExchange
               Name: hr_app_uaa_hr_approval_rag_usecase
-              ServiceInstanceName: rag-quick-start-app-xsuaa-service
-              ServiceKeyName: uaa_rag-quick-start-app-key
+              ServiceInstanceName: rag-cap-llm-xsuaa-service
+              ServiceKeyName: uaa_rag-cap-llm-key
               sap.cloud.service: ragquickstart.app
           existing_destinations_policy: ignore
     build-parameters:
       no-source: true
 
   # ------------------ APPLICATION CONTENT ----------------------
-  - name: rag-quick-start-app-app-content
+  - name: rag-cap-llm-app-content
     # -------------------------------------------------------------
     type: com.sap.application.content
     path: .
     requires:
-      - name: rag-quick-start-app-repo-host
+      - name: rag-cap-llm-repo-host
         parameters:
           content-target: true
     build-parameters:
@@ -116,7 +116,7 @@ modules:
         []
 
   # ------------------ App Router -------------------------------  
-  - name: rag-quick-start-app-approuter
+  - name: rag-cap-llm-approuter
     # -------------------------------------------------------------
     type: approuter.nodejs
     path: app/
@@ -136,39 +136,39 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
-      - name: rag-quick-start-app-auth
-      - name: rag-quick-start-app-destination-service
+      - name: rag-cap-llm-auth
+      - name: rag-cap-llm-destination-service
 
 resources:
   # ------------------------------------------------------------
-  - name: rag-quick-start-app-auth
+  - name: rag-cap-llm-auth
     # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
       path: ./xs-security.json
       service: xsuaa
       service-plan: application
-      service-name: rag-quick-start-app-xsuaa-service
+      service-name: rag-cap-llm-xsuaa-service
       config:
         tenant-mode: dedicated
-        xsappname: rag-quick-start-app-${org}-${space}
+        xsappname: rag-cap-llm-${org}-${space}
   # ------------------------------------------------------------
-  - name: rag-quick-start-app-db
+  - name: rag-cap-llm-db
     # ------------------------------------------------------------
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
   # ------------------------------------------------------------
-  - name: rag-quick-start-app-repo-host
+  - name: rag-cap-llm-repo-host
     # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
-      service-name: rag-quick-start-app-html5-app-host-service
+      service-name: rag-cap-llm-html5-app-host-service
       service-plan: app-host
   # ------------------------------------------------------------
-  - name: rag-quick-start-app-destination-service
+  - name: rag-cap-llm-destination-service
     # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     requires:
@@ -183,7 +183,7 @@ resources:
                 HTML5.DynamicDestination: true
                 HTML5.ForwardAuthToken: true
                 HTML5.Timeout: 30000
-                Name: rag-quick-start-app-srv
+                Name: rag-cap-llm-srv
                 ProxyType: Internet
                 Type: HTTP
                 URL: ~{srv-api/srv-url}
@@ -195,5 +195,5 @@ resources:
             existing_destinations_policy: update
         version: 1.0.0
       service: destination
-      service-name: rag-quick-start-app-destination-service
+      service-name: rag-cap-llm-destination-service
       service-plan: lite

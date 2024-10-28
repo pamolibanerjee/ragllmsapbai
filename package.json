@@ -84,7 +84,7 @@
         "kind": "rest",
         "credentials": {
           "destination": "GENERATIVE_AI_HUB",
-          "requestTimeout": "300000"
+          "requestTimeout": "30000000"
         }
       },
       "[hybrid]": {
