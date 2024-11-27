@@ -4,7 +4,7 @@ sap.ui.define([
 ], function(Controller, JSONModel) {
     'use strict';
     
-    return Controller.extend("hrapprovalui.controller.InitialRightScreen", {
+    return Controller.extend("createsofromchat.controller.InitialRightScreen", {
 
         onInit: function(){
 

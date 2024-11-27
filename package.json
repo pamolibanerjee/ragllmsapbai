@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap-cloud-sdk/http-client": "^3.12.0",
+    "@sap-cloud-sdk/http-client": "^3.23.0",
     "@sap/cds": "^7.6.3",
     "@sap/cds-compiler": "^4.6.2",
     "@sap/cds-hana": "^2",
@@ -17,7 +17,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.4",
     "downloadjs": "^1.4.7",
-    "express": "^4",
+    "express": "^4.21.1",
+    "filereader": "^0.10.3",
     "langchain": "^0.1.19",
     "passport": "^0.7.0",
     "pdf-lib": "^1.17.1",
@@ -42,6 +43,7 @@
   },
   "scripts": {
     "start": "cds-serve",
+    "start_local": "cds watch --profile hybrid",
     "watch-hr-approval-ui": "cds watch --open hr-approval-ui/webapp/index.html?sap-ui-xx-viewCache=false",
     "undeploy": "cf undeploy rag-quick-start-app --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
@@ -67,7 +69,7 @@
         },
         "gpt-4o": {
           "destinationName": "GenAIHubDestination",
-          "deploymentUrl": "/v2/inference/deployments/dc069048e9d4e038",
+          "deploymentUrl": "/v2/inference/deployments/d03c85df13ec9a7a",
           "resourceGroup": "default",
           "apiVersion": "2024-05-13",
           "modelName": "gpt-4o"

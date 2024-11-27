@@ -1,5 +1,5 @@
 _schema-version: "3.1"
-ID: rag-cap-llm
+ID: create-so-from-chat
 description: A simple CAP project.
 version: 1.0.0
 parameters:
@@ -14,14 +14,14 @@ build-parameters:
 
 modules:
   # --------------------- SERVER MODULE -------------------------
-  - name: rag-cap-llm-srv
+  - name: create-so-from-chat-srv
     # -------------------------------------------------------------
     type: nodejs
     path: gen/srv
     requires:
-      - name: rag-cap-llm-auth
-      - name: rag-cap-llm-db
-      - name: rag-cap-llm-destination-service
+      - name: create-so-from-chat-auth
+      - name: create-so-from-chat-db
+      - name: create-so-from-chat-destination-service
     provides:
       - name: srv-api
         properties:
@@ -39,12 +39,12 @@ modules:
         - default-env.json
 
   # -------------------- DB MODULE ------------------------------
-  - name: rag-cap-llm-db-deployer
+  - name: create-so-from-chat-db-deployer
     # -------------------------------------------------------------
     type: hdb
     path: gen/db
     requires:
-      - name: rag-cap-llm-db
+      - name: create-so-from-chat-db
     parameters:
       buildpack: nodejs_buildpack
     # build-parameters:
@@ -52,57 +52,57 @@ modules:
     #     - node_modules/
 
     # ------------------ DESTINATION CONTENT ----------------------
-  - name: rag-cap-llm-destination-content
+  - name: create-so-from-chat-destination-content
     # ------------------------------------------------------------
     type: com.sap.application.content
     requires:
-      - name: rag-cap-llm-destination-service
+      - name: create-so-from-chat-destination-service
         parameters:
           content-target: true
-      - name: rag-cap-llm-repo-host
+      - name: create-so-from-chat-repo-host
         parameters:
           service-key:
-            name: rag-cap-llm-repo-host-key
-      - name: rag-cap-llm-auth
+            name: create-so-from-chat-repo-host-key
+      - name: create-so-from-chat-auth
         parameters:
           service-key:
-            name: uaa_rag-cap-llm-key
+            name: uaa_create-so-from-chat-key
     parameters:
       content:
         instance:
           destinations:
             - Name: hr_app_hr_approval_rag_usecase_repo_host
-              ServiceInstanceName: rag-cap-llm-html5-app-host-service
-              ServiceKeyName: rag-cap-llm-repo-host-key
-              sap.cloud.service: ragquickstart.app
+              ServiceInstanceName: create-so-from-chat-html5-app-host-service
+              ServiceKeyName: create-so-from-chat-repo-host-key
+              sap.cloud.service: createsofromchat.app
             - Authentication: OAuth2UserTokenExchange
               Name: hr_app_uaa_hr_approval_rag_usecase
-              ServiceInstanceName: rag-cap-llm-xsuaa-service
-              ServiceKeyName: uaa_rag-cap-llm-key
-              sap.cloud.service: ragquickstart.app
+              ServiceInstanceName: create-so-from-chat-xsuaa-service
+              ServiceKeyName: uaa_create-so-from-chat-key
+              sap.cloud.service: createsofromchat.app
           existing_destinations_policy: ignore
     build-parameters:
       no-source: true
 
   # ------------------ APPLICATION CONTENT ----------------------
-  - name: rag-cap-llm-app-content
+  - name: create-so-from-chat-app-content
     # -------------------------------------------------------------
     type: com.sap.application.content
     path: .
     requires:
-      - name: rag-cap-llm-repo-host
+      - name: create-so-from-chat-repo-host
         parameters:
           content-target: true
     build-parameters:
       build-result: resources
       requires:
         - artifacts:
-            - hrapprovalui.zip
-          name: ragquickstartui
+            - createsofromchat.zip
+          name: createsofromchatui
           target-path: resources/
 
   # ------------- APPLICATION: UI5 -------------------------
-  - name: ragquickstartui
+  - name: createsofromchatui
     # ------------------------------------------------------------
     type: html5
     path: app
@@ -116,7 +116,7 @@ modules:
         []
 
   # ------------------ App Router -------------------------------  
-  - name: rag-cap-llm-approuter
+  - name: create-so-from-chat-approuter
     # -------------------------------------------------------------
     type: approuter.nodejs
     path: app/
@@ -136,39 +136,40 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
-      - name: rag-cap-llm-auth
-      - name: rag-cap-llm-destination-service
+      - name: create-so-from-chat-auth
+      - name: create-so-from-chat-destination-service
 
 resources:
   # ------------------------------------------------------------
-  - name: rag-cap-llm-auth
+  - name: create-so-from-chat-auth
     # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
       path: ./xs-security.json
       service: xsuaa
       service-plan: application
-      service-name: rag-cap-llm-xsuaa-service
+      service-name: create-so-from-chat-xsuaa-service
       config:
         tenant-mode: dedicated
-        xsappname: rag-cap-llm-${org}-${space}
+#        xsappname: create-so-from-chat-${org}-${space}
+        xsappname: create-so-from-chat-xsappname
   # ------------------------------------------------------------
-  - name: rag-cap-llm-db
+  - name: create-so-from-chat-db
     # ------------------------------------------------------------
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
   # ------------------------------------------------------------
-  - name: rag-cap-llm-repo-host
+  - name: create-so-from-chat-repo-host
     # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
-      service-name: rag-cap-llm-html5-app-host-service
+      service-name: create-so-from-chat-html5-app-host-service
       service-plan: app-host
   # ------------------------------------------------------------
-  - name: rag-cap-llm-destination-service
+  - name: create-so-from-chat-destination-service
     # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     requires:
@@ -183,7 +184,7 @@ resources:
                 HTML5.DynamicDestination: true
                 HTML5.ForwardAuthToken: true
                 HTML5.Timeout: 30000
-                Name: rag-cap-llm-srv
+                Name: create-so-from-chat-srv
                 ProxyType: Internet
                 Type: HTTP
                 URL: ~{srv-api/srv-url}
@@ -195,5 +196,5 @@ resources:
             existing_destinations_policy: update
         version: 1.0.0
       service: destination
-      service-name: rag-cap-llm-destination-service
+      service-name: create-so-from-chat-destination-service
       service-plan: lite
