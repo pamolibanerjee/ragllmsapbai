@@ -1,4 +1,4 @@
-using {sap.socreate.demo as db} from '../db/schema';
+using {sap.tisce.demo as db} from '../db/schema';
 
 service ChatService @(requires: 'authenticated-user') {
 //service ChatService {

@@ -63,11 +63,11 @@
                         text="Delete"
                         enabled="false"
                         press=".onDeleteFiles"/>
-                    <!-- <m:Button
+                    <m:Button
                         id="deleteEmbeddingSelectedButton"
                         text="Delete Embeddings"
                         enabled="true"
-                        press=".onDeleteEmbedding"/> -->
+                        press=".onDeleteEmbedding"/>
                 </m:OverflowToolbar>
             </headerToolbar>
 
@@ -95,7 +95,7 @@
                 </Column>
                 <Column id="actionButton" importance="High" >
                     <header>
-                        <m:Label id="labelForActionButton" text="Process Document" />
+                        <m:Label id="labelForActionButton" text="Generate Embeddings" />
                     </header>
                 </Column>
             </columns>
@@ -132,7 +132,7 @@
                             class="sapUiTinyMarginBegin"
                             type="Transparent"
                             icon="sap-icon://begin"
-                            press=".onProcessDocument"
+                            press=".onGenerateVectorBtnClick"
                         />
                     </cells>
                 </UploadSetwithTableItem>

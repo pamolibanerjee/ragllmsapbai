@@ -1,5 +1,5 @@
 <mvc:View 
-    controllerName="createsofromchat.controller.InitialRightScreen"
+    controllerName="hrapprovalui.controller.InitialRightScreen"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:f="sap.f"
@@ -47,7 +47,6 @@
                     growing="true"
                     post=".onSendMessage"
                     enabled="{chatModel>/enableTextArea}"
-                    
                 >
                 </FeedInput>   
             </OverflowToolbar>

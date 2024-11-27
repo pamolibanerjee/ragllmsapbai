@@ -5,12 +5,12 @@
 sap.ui.define([
         "sap/ui/core/UIComponent",
         "sap/ui/Device",
-        "createsofromchat/model/models"
+        "hrapprovalui/model/models"
     ],
     function (UIComponent, Device, models) {
         "use strict";
 
-        return UIComponent.extend("createsofromchat.Component", {
+        return UIComponent.extend("hrapprovalui.Component", {
             metadata: {
                 manifest: "json"
             },

@@ -1,5 +1,5 @@
 {
-  "xsappname": "rag-cap-llm",
+  "xsappname": "rag-quickstart-demo",
   "tenant-mode": "dedicated",
   "scopes": [],
   "attributes": [],

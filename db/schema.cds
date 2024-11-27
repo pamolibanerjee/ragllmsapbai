@@ -1,4 +1,4 @@
-namespace sap.socreate.demo;
+namespace sap.tisce.demo;
 
 using {
     cuid,
@@ -24,24 +24,20 @@ entity Message {
     creation_time: Timestamp;
 }
 
-// entity DocumentChunk
-// {
-//     text_chunk: LargeString;
-//     metadata_column: LargeString;
-//     embedding: Vector(1536);
-// }
+entity DocumentChunk
+{
+    text_chunk: LargeString;
+    metadata_column: LargeString;
+    embedding: Vector(1536);
+}
 
 
 entity Files: cuid, managed{
-    @Core.MediaType: mediaType 
-    @Core.ContentDisposition.Filename: fileName
-    @Core.ContentDisposition.Type: 'inline'
+    @Core.MediaType: mediaType @Core.ContentDisposition.Filename: fileName
     content: LargeBinary;
     @Core.IsMediaType: true
     mediaType: String;
     fileName: String;
     size: String;
-    jsonContent : String;
-    url: String
 }
 

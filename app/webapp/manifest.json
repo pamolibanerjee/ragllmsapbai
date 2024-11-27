@@ -1,7 +1,7 @@
 {
   "_version": "1.59.0",
   "sap.app": {
-    "id": "createsofromchat",
+    "id": "hrapprovalui",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -25,7 +25,7 @@
         }
       },
       "fileService":{
-        "uri": "/odata/v4/process-document/",
+        "uri": "/odata/v4/embedding-storage/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -88,7 +88,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "createsofromchat.i18n.i18n"
+          "bundleName": "hrapprovalui.i18n.i18n"
         }
       },
       "": {
@@ -120,7 +120,7 @@
       ]
     },
     "rootView": {
-      "viewName": "createsofromchat.view.App",
+      "viewName": "hrapprovalui.view.App",
       "type": "XML",
       "async": true,
       "id": "App"
@@ -130,7 +130,7 @@
         "routerClass": "sap.f.routing.Router",
         "viewType": "XML",
         "async": true,
-        "viewPath": "createsofromchat.view",
+        "viewPath": "hrapprovalui.view",
         "controlId": "flexibleColumnLayout",
         "transition": "slide"
       },

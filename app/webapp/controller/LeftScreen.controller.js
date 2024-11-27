@@ -11,7 +11,7 @@ sap.ui.define([
      Filter, FilterOperator, MessageToast, JSONModel, MessageBox) {
     'use strict';
     
-    return Controller.extend("createsofromchat.controller.LeftScreen", {
+    return Controller.extend("hrapprovalui.controller.LeftScreen", {
 
         onInit: function(){
 
@@ -108,7 +108,7 @@ sap.ui.define([
         onUploadFileBtnSelect: function(oEvent){
 
             this.fileUploadFragment ??= this.loadFragment({
-                name: "createsofromchat.view.FileUploading"
+                name: "hrapprovalui.view.FileUploading"
             });
 
             this.fileUploadFragment.then((oFragment) => oFragment.open());
@@ -122,7 +122,7 @@ sap.ui.define([
         onManageFileBtnSelect: function(){
 
             this.fileManagementFragment ??= this.loadFragment({
-                name: "createsofromchat.view.FileManagement"
+                name: "hrapprovalui.view.FileManagement"
             });
 
             this.fileManagementFragment.then((oFragment) => oFragment.open());
@@ -181,8 +181,8 @@ sap.ui.define([
             };
 
             const settings = {
-                url : sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + "/odata/v4/process-document/Files":"/odata/v4/process-document/Files",
-//                url: this.getBaseURL() + "/odata/v4/process-document/Files",
+                url : sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + "/odata/v4/embedding-storage/Files":"/odata/v4/embedding-storage/Files",
+//                url: this.getBaseURL() + "/odata/v4/embedding-storage/Files",
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -201,7 +201,7 @@ sap.ui.define([
         },
 
         uploadContent: function (item, id) {
-            var url = sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + `/odata/v4/process-document/Files(${id})/content`:`/odata/v4/process-document/Files(${id})/content`;
+            var url = sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + `/odata/v4/embedding-storage/Files(${id})/content`:`/odata/v4/embedding-storage/Files(${id})/content`;
             item.setUploadUrl(url);	
 			var oUploadSet = this.byId("uploadSet");
 			oUploadSet.setHttpRequestMethod("PUT");
@@ -277,7 +277,7 @@ sap.ui.define([
         requestFileDownload: function(fileID){
 
             const settings = {
-                url: this.getBaseURL() + `/odata/v4/process-document/Files(${fileID})/content`,
+                url: this.getBaseURL() + `/odata/v4/embedding-storage/Files(${fileID})/content`,
                 method: "GET",
                 xhrFields:{
                     responseType: "blob"
@@ -295,7 +295,7 @@ sap.ui.define([
             });
         },
 
-        onProcessDocument: function(oEvent){
+        onGenerateVectorBtnClick: function(oEvent){
 
             let clickedControl = oEvent.getSource();
             let oItem = null;
@@ -313,18 +313,18 @@ sap.ui.define([
             const pdfFileID = oAggregations.cells[1].getProperty("text");
 
             this.byId("fileManagementFragment").setBusy(true);
-            this.requestDocumentProcessing(pdfFileID)
+            this.requestEmbeddingGeneration(pdfFileID)
                 .then((oReturn) => {
                     this.byId("fileManagementFragment").setBusy(false);
-                    MessageToast.show("Document Processing completed successfully.");
+                    MessageToast.show("Embeddings generation completed successfully.");
                 })
                 .catch((error) => {
                     this.byId("fileManagementFragment").setBusy(false);
-                    MessageToast.show("Document Processing failed, please try again.");
+                    MessageToast.show("Embeddings generation failed, please try again.");
                 });
         },
 
-        requestDocumentProcessing: function(pdfFileID){
+        requestEmbeddingGeneration: function(pdfFileID){
 
             const payload = JSON.stringify({
                 uuid: pdfFileID.toString(),
@@ -332,11 +332,8 @@ sap.ui.define([
 
             return new Promise((resolve, reject) => {
 
- //               url : sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + "/odata/v4/process-document/Files":"/odata/v4/process-document/Files",
-
                 $.ajax({
-//                    url: this.getBaseURL() + "/odata/v4/process-document/process_document",
-                    url : sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + "/odata/v4/process-document/process_document":"/odata/v4/process-document/process_document",
+                    url: this.getBaseURL() + "/odata/v4/embedding-storage/storeEmbeddings",
                     type: "POST",
                     contentType: 'application/json',
                     async: true,
@@ -408,9 +405,7 @@ sap.ui.define([
         requestFileDelete: function(fileID){
 
             const settings = {
-         //       url: this.getBaseURL() + `/odata/v4/process-document/Files(${fileID})`,
-
-                url : sessionStorage.getItem("isDeployedVersion")==="true"?this.getBaseURL() + `/odata/v4/process-document/Files(${fileID})`:`/odata/v4/process-document/Files(${fileID})`,
+                url: this.getBaseURL() + `/odata/v4/embedding-storage/Files(${fileID})`,
                 method: "DELETE",
             };
 
@@ -444,7 +439,7 @@ sap.ui.define([
         requestEmbeddingDelete: function(){
 
             const settings = {
-                url: this.getBaseURL() + "/odata/v4/process-document/deleteEmbeddings()",
+                url: this.getBaseURL() + "/odata/v4/embedding-storage/deleteEmbeddings()",
                 method: "GET",
             };
 

@@ -5,9 +5,9 @@ sap.ui.define(
     function(BaseController) {
       "use strict";
   
-      return BaseController.extend("createsofromchat.controller.App", {
+      return BaseController.extend("hrapprovalui.controller.App", {
         onInit: function() {
-          sessionStorage.setItem("isDeployedVersion", "false");
+          sessionStorage.setItem("isDeployedVersion", "true");
         }
       });
     }
